@@ -9,7 +9,6 @@ if(!isset($_SESSION['userID'])){
 
 $csrf_token = $_SESSION['csrf_token'];
 
-// Get user count
 $userCount = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE dateDeleted IS NULL"))['total'];
 $adminCount = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE userID = 1 AND dateDeleted IS NULL"))['total'];
 ?>
@@ -767,9 +766,9 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Pusher Real-time Notification Script -->
+
 <script>
-// Initialize Pusher
+
 Pusher.logToConsole = true;
 
 var pusher = new Pusher('3d5e91994ffcfa8ec0b5', {
@@ -780,10 +779,10 @@ var channel = pusher.subscribe('my-channel');
 channel.bind('my-event', function(data) {
     console.log('Pusher event received:', data);
     
-    // Handle different actions
+   
     switch(data.action) {
         case 'add':
-            // New user added
+           
             Swal.fire({
                 icon: 'success',
                 title: '🆕 New User Added!',
@@ -806,7 +805,7 @@ channel.bind('my-event', function(data) {
             break;
             
         case 'update':
-            // User updated
+          
             let changesHtml = '';
             if(data.changes && data.changes.length > 0) {
                 changesHtml = '<div class="mt-2"><strong>Changes:</strong><ul style="margin: 5px 0 0 15px;">';
@@ -839,7 +838,7 @@ channel.bind('my-event', function(data) {
             break;
             
         case 'delete':
-            // User deleted
+          
             Swal.fire({
                 icon: 'warning',
                 title: '🗑️ User Deleted',
@@ -862,7 +861,7 @@ channel.bind('my-event', function(data) {
             break;
             
         default:
-            // Generic notification
+         
             Swal.fire({
                 icon: 'info',
                 title: '🔔 Notification',
@@ -878,7 +877,7 @@ channel.bind('my-event', function(data) {
             break;
     }
     
-    // Reload page to reflect changes (for add and delete actions)
+    
     if(data.action === 'add' || data.action === 'delete') {
         setTimeout(function() {
             location.reload();
@@ -889,11 +888,10 @@ channel.bind('my-event', function(data) {
         }, 3000);
     }
     
-    // Show floating notification badge
+    
     showFloatingBadge(data.action);
 });
 
-// Show floating notification badge
 function showFloatingBadge(action) {
     let badge = document.querySelector('.pusher-floating-badge');
     if(badge) {
@@ -956,14 +954,14 @@ function showFloatingBadge(action) {
     }, 3000);
 }
 
-// Auto clear URL parameters after page load
+
 if(window.location.search.length > 0 && !window.location.search.includes('?')) {
     setTimeout(() => {
         window.history.replaceState({}, document.title, window.location.pathname);
     }, 3000);
 }
 
-// Form validation for add user
+
 document.getElementById('addUserForm')?.addEventListener('submit', function(e) {
     let password = this.querySelector('input[name="password"]').value;
     if(password.length < 6) {

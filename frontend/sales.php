@@ -7,7 +7,7 @@ if(!isset($_SESSION['userID'])){
     exit();
 }
 
-// Handle delete request
+
 if(isset($_POST['deleteSale']) && isset($_POST['saleID'])) {
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
         header("Location: sales.php?error=invalid_token");
@@ -17,7 +17,7 @@ if(isset($_POST['deleteSale']) && isset($_POST['saleID'])) {
     $saleID = mysqli_real_escape_string($conn, $_POST['saleID']);
     $dateDeleted = date('Y-m-d H:i:s');
     
-    // Soft delete the sale
+  
     $query = "UPDATE sales SET dateDeleted = '$dateDeleted' WHERE saleID = '$saleID'";
     
     if(mysqli_query($conn, $query)){
@@ -29,12 +29,11 @@ if(isset($_POST['deleteSale']) && isset($_POST['saleID'])) {
     }
 }
 
-// Get filter values from GET parameters
+
 $dateFilter = isset($_GET['date_filter']) ? $_GET['date_filter'] : 'today';
 $startDate = isset($_GET['start_date']) ? $_GET['start_date'] : '';
 $endDate = isset($_GET['end_date']) ? $_GET['end_date'] : '';
 
-// Set dates based on filter
 $currentDate = date('Y-m-d');
 switch($dateFilter){
     case 'today':
@@ -54,7 +53,6 @@ switch($dateFilter){
         $endDate = date('Y-m-t');
         break;
     case 'custom':
-        // Use the provided start_date and end_date
         if(empty($startDate)) $startDate = $currentDate;
         if(empty($endDate)) $endDate = $currentDate;
         break;
@@ -63,16 +61,15 @@ switch($dateFilter){
         $endDate = $currentDate;
 }
 
-// Pagination
+
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
-// Build WHERE clause
 $whereClause = "s.dateDeleted IS NULL";
 $whereClause .= " AND DATE(s.saleDate) BETWEEN '$startDate' AND '$endDate'";
 
-// Get total count for pagination
+
 $totalQuery = "SELECT COUNT(DISTINCT s.saleID) as total 
                FROM sales s 
                WHERE $whereClause";
@@ -81,7 +78,7 @@ $totalRow = mysqli_fetch_assoc($totalResult);
 $totalSales = $totalRow['total'] ?? 0;
 $totalPages = $totalPages = ($totalSales > 0) ? ceil($totalSales / $limit) : 1;
 
-// Get sales data
+
 $query = "SELECT s.*, COUNT(si.saleItemID) as item_count 
           FROM sales s 
           LEFT JOIN sale_items si ON s.saleID = si.saleID 
@@ -91,7 +88,7 @@ $query = "SELECT s.*, COUNT(si.saleItemID) as item_count
           LIMIT $offset, $limit";
 $result = mysqli_query($conn, $query);
 
-// Get summary for current filter
+
 $summaryQuery = "SELECT 
                     COALESCE(SUM(s.grandTotal), 0) as total, 
                     COUNT(s.saleID) as count, 
@@ -391,7 +388,7 @@ $summary = mysqli_fetch_assoc($summaryResult);
         </div>
     <?php endif; ?>
     
-    <!-- Pagination -->
+    
     <?php if($totalPages > 1): ?>
     <nav class="mt-4">
         <ul class="pagination justify-content-center">
@@ -419,19 +416,19 @@ $summary = mysqli_fetch_assoc($summaryResult);
     <?php endif; ?>
 </div>
 
-<!-- Delete Form (Hidden) -->
+
 <form id="deleteForm" method="POST" style="display: none;">
     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
     <input type="hidden" name="saleID" id="deleteSaleID">
     <input type="hidden" name="deleteSale" value="1">
 </form>
 
-<!-- Receipt Modal -->
+
 <div class="modal fade" id="receiptModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content receipt-modal">
             <div class="modal-body" id="receiptContent">
-                <!-- Receipt content loaded via AJAX -->
+                
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -499,9 +496,9 @@ function printReceipt(saleID) {
     });
 }
 
-// Preserve filter values when clicking pagination
+
 $(document).ready(function() {
-    // Add loading effect on filter submit
+    
     $('form').on('submit', function() {
         $('button[type="submit"]').html('<i class="bi bi-hourglass-split"></i> Loading...');
     });
