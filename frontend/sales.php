@@ -464,7 +464,7 @@ function confirmDelete(saleID, invoiceNo) {
 
 function viewReceipt(saleID) {
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getReceipt: true, saleID: saleID },
         success: function(response) {
@@ -479,7 +479,7 @@ function viewReceipt(saleID) {
 
 function printReceipt(saleID) {
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getReceipt: true, saleID: saleID },
         success: function(response) {

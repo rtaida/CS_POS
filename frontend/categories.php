@@ -129,7 +129,7 @@ $csrf_token = $_SESSION['csrf_token'];
         <div class="modal fade" id="editCategoryModal<?php echo $row['categoryID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form method="POST" action="../backend/routes.php?route=categories">
+                    <form method="POST" action="../backend/categoryAuth.php">
                         <div class="modal-header bg-warning text-dark">
                             <h5 class="modal-title">Edit Category</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -159,7 +159,7 @@ $csrf_token = $_SESSION['csrf_token'];
         <div class="modal fade" id="deleteCategoryModal<?php echo $row['categoryID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form method="POST" action="../backend/routes.php?route=categories">
+                    <form method="POST" action="../backend/categoryAuth.php">
                         <div class="modal-header bg-danger text-white">
                             <h5 class="modal-title">Delete Category</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -190,7 +190,7 @@ $csrf_token = $_SESSION['csrf_token'];
 <div class="modal fade" id="addCategoryModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form method="POST" action="../backend/routes.php?route=categories">
+            <form method="POST" action="../backend/categoryAuth.php">
                 <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Add New Category</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

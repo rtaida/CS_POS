@@ -1,7 +1,7 @@
 <div class="modal fade modal-custom" id="editProductModal<?php echo $row['productID']; ?>" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form method="POST" action="../backend/routes.php?route=products">
+            <form method="POST" action="../backend/productAuth.php">
                 <div class="modal-header bg-warning text-dark">
                     <h5 class="modal-title">Edit Product: <?php echo htmlspecialchars($row['productName']); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

@@ -330,7 +330,7 @@ function loadSalesSummary() {
     $('#salesSummaryResult').html('<div class="text-center py-5"><i class="bi bi-hourglass-split"></i> Loading...</div>');
     
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getSalesSummary: true, startDate: startDate, endDate: endDate },
         dataType: 'json',
@@ -382,7 +382,7 @@ function loadTopProducts() {
     $('#topProductsResult').html('<div class="text-center py-5"><i class="bi bi-hourglass-split"></i> Loading...</div>');
     
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getTopProducts: true, startDate: startDate, endDate: endDate, limit: limit },
         dataType: 'json',
@@ -427,7 +427,7 @@ function loadInventoryStatus() {
     $('#inventoryResult').html('<div class="text-center py-5"><i class="bi bi-hourglass-split"></i> Loading...</div>');
     
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getInventoryStatus: true },
         dataType: 'json',
@@ -480,7 +480,7 @@ function loadProfitLoss() {
     $('#profitLossResult').html('<div class="text-center py-5"><i class="bi bi-hourglass-split"></i> Loading...</div>');
     
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getProfitLoss: true, startDate: startDate, endDate: endDate },
         dataType: 'json',
@@ -546,7 +546,7 @@ function loadCategorySales() {
     $('#categorySalesResult').html('<div class="text-center py-5"><i class="bi bi-hourglass-split"></i> Loading...</div>');
     
     $.ajax({
-        url: '../backend/routes.php?route=reports',
+        url: '../backend/reportAuth.php',
         method: 'POST',
         data: { getSalesByCategory: true, startDate: startDate, endDate: endDate },
         dataType: 'json',
@@ -633,7 +633,7 @@ function exportReport(type) {
         // No additional params needed
     }
     
-    window.location.href = '../backend/routes.php?route=reports&' + params.toString();
+    window.location.href = '../backend/reportAuth.php?' + params.toString();
 }
 
 // Load default reports on page load
