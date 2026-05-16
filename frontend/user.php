@@ -654,7 +654,7 @@ body {
         <div class="modal fade modern-modal" id="editUserModal<?php echo $row['userID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form method="POST" action="../backend/userAuth.php">
+                    <form method="POST" action="../backend/routes.php?route=users">
                         <div class="modal-header">
                             <h5 class="modal-title"><i class="bi bi-pencil-square"></i> Edit User</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -689,7 +689,7 @@ body {
         <div class="modal fade modern-modal" id="deleteUserModal<?php echo $row['userID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
-                    <form method="POST" action="../backend/userAuth.php">
+                    <form method="POST" action="../backend/routes.php?route=users">
                         <div class="modal-header" style="background: #dc3545;">
                             <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Delete User</h5>
                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -729,7 +729,7 @@ body {
 <div class="modal fade modern-modal" id="addUserModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <form method="POST" action="../backend/userAuth.php" id="addUserForm">
+            <form method="POST" action="../backend/routes.php?route=users" id="addUserForm">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-person-plus-fill"></i> Add New User</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

@@ -304,7 +304,7 @@ $recent_sales = mysqli_query($conn, $recent_query);
 <script>
 // Sales Trend Chart
 $.ajax({
-    url: '../backend/reportAuth.php',
+    url: '../backend/routes.php?route=reports',
     method: 'POST',
     data: { getLast7DaysSales: true },
     dataType: 'json',
@@ -357,7 +357,7 @@ $.ajax({
 
 // Payment Method Chart
 $.ajax({
-    url: '../backend/reportAuth.php',
+    url: '../backend/routes.php?route=reports',
     method: 'POST',
     data: { getPaymentBreakdown: true },
     dataType: 'json',

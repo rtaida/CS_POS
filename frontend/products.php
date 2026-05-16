@@ -202,7 +202,7 @@ $csrf_token = $_SESSION['csrf_token'];
                     <div class="modal fade" id="deleteProductModal<?php echo $row['productID']; ?>" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <form method="POST" action="../backend/productAuth.php">
+                                <form method="POST" action="../backend/routes.php?route=products">
                                     <div class="modal-header bg-danger text-white">
                                         <h5 class="modal-title">Delete Product</h5>
                                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
@@ -232,7 +232,7 @@ $csrf_token = $_SESSION['csrf_token'];
 <div class="modal fade modal-custom" id="addProductModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form method="POST" action="../backend/productAuth.php">
+            <form method="POST" action="../backend/routes.php?route=products">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Add New Product</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>

@@ -175,7 +175,7 @@ body {
         </div>
         <?php endif; ?>
 
-        <form action="./backend/auth.php" method="POST">
+        <form action="./backend/routes.php?route=login" method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
             
             <div class="input-group-custom">
