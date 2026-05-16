@@ -3,7 +3,7 @@ require_once 'database.php';
 session_start();
 
 // Load Pusher SDK
-require_once __DIR__ . '/../vendor/autoload.php';
+include_once dirname(__DIR__) . '/vendor/autoload.php';
 
 if(!isset($_SESSION['userID'])){
     header("Location: ../index.php");
