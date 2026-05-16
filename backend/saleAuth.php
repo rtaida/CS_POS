@@ -7,9 +7,6 @@ if(!isset($_SESSION['userID'])){
     exit();
 }
 
-// Load shared Pusher helper
-require_once __DIR__ . '/pusher_helper.php';
-
 if(isset($_POST['startSale'])){
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
         header("Location: ../index.php");
@@ -29,16 +26,6 @@ if(isset($_POST['startSale'])){
     
     $_SESSION['current_sale_id'] = $saleID;
     $_SESSION['current_invoice'] = $invoiceNo;
-    
-    // Send Pusher notification that a sale has started
-    $notificationData = [
-        'action' => 'sale_started',
-        'saleID' => $saleID,
-        'invoiceNo' => $invoiceNo,
-        'started_by' => $_SESSION['fullName'] ?? 'Unknown',
-        'timestamp' => date('Y-m-d H:i:s')
-    ];
-    sendPusherNotification('sale_started', $notificationData);
     
     header("Location: ../frontend/pos.php?sale_started");
     exit();
@@ -63,15 +50,6 @@ if(isset($_POST['addToCart'])){
     $result = mysqli_fetch_assoc($query);
     
     if($result['status'] == 'SUCCESS'){
-        // Notify clients that cart was updated
-        $cartNotification = [
-            'action' => 'add_to_cart',
-            'saleID' => $saleID,
-            'productID' => $productID,
-            'quantity' => $quantity,
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('cart_update', $cartNotification);
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Insufficient stock. Available: ' . $result['available_stock']]);
@@ -95,14 +73,6 @@ if(isset($_POST['finalizeSale'])){
     if($result['status'] == 'SUCCESS'){
         unset($_SESSION['current_sale_id']);
         unset($_SESSION['current_invoice']);
-        // Notify clients that sale was finalized
-        $finalNotification = [
-            'action' => 'sale_finalized',
-            'saleID' => $saleID,
-            'finalized_by' => $_SESSION['fullName'] ?? 'Unknown',
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('sale_finalized', $finalNotification);
         header("Location: ../frontend/sales.php?receipt_saved");
         exit();
     }
@@ -141,14 +111,6 @@ if(isset($_POST['removeCartItem'])){
     
     $query = "DELETE FROM sale_items WHERE saleItemID = $saleItemID";
     if(mysqli_query($conn, $query)){
-        // Notify clients that a cart item was removed
-        $removeNotification = [
-            'action' => 'remove_from_cart',
-            'saleItemID' => $saleItemID,
-            'removed_by' => $_SESSION['fullName'] ?? 'Unknown',
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('cart_update', $removeNotification);
         echo json_encode(['status' => 'success']);
     } else {
         echo json_encode(['status' => 'error']);

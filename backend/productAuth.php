@@ -7,9 +7,6 @@ if(!isset($_SESSION['userID'])){
     exit();
 }
 
-// Load shared Pusher helper
-require_once __DIR__ . '/pusher_helper.php';
-
 if(isset($_POST['productAuth'])){
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
         header("Location: ../index.php");
@@ -33,17 +30,6 @@ if(isset($_POST['productAuth'])){
         header("Location: ../frontend/products.php?already");
         exit();
     } elseif($result['status'] == 'SUCCESS'){
-        // Notify via Pusher about new product
-        $notificationData = [
-            'action' => 'add',
-            'message' => 'New product added',
-            'productCode' => $productCode,
-            'productName' => $productName,
-            'triggered_by' => $_SESSION['fullName'] ?? 'Admin',
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('product_added', $notificationData);
-
         header("Location: ../frontend/products.php?savedData");
         exit();
     } else {
@@ -79,18 +65,6 @@ if(isset($_POST['updateProduct'])){
         header("Location: ../frontend/products.php?nothingChanged");
         exit();
     } else {
-        // Notify via Pusher about product update
-        $updateNotification = [
-            'action' => 'update',
-            'message' => 'Product updated',
-            'productID' => $productID,
-            'productCode' => $productCode,
-            'productName' => $productName,
-            'updated_by' => $_SESSION['fullName'] ?? 'Admin',
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('product_updated', $updateNotification);
-
         header("Location: ../frontend/products.php?updateData");
         exit();
     }
@@ -111,16 +85,6 @@ if(isset($_POST['DeleteProduct'])){
     $stmt->bind_param("si", $dateDeleted, $productID);
     
     if($stmt->execute()){
-        // Notify via Pusher about deleted product
-        $deleteNotification = [
-            'action' => 'delete',
-            'message' => 'Product deleted',
-            'productID' => $productID,
-            'deleted_by' => $_SESSION['fullName'] ?? 'Admin',
-            'timestamp' => date('Y-m-d H:i:s')
-        ];
-        sendPusherNotification('product_deleted', $deleteNotification);
-
         header("Location: ../frontend/products.php?deleteData");
         exit();
     }
