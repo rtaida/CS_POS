@@ -503,7 +503,7 @@ body {
 <?php include "nav.php"; ?>
 
 <div class="main-content">
-    <!-- Header with Add Button -->
+    
     <div class="page-header">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
@@ -516,7 +516,7 @@ body {
         </div>
     </div>
 
-    <!-- Stats Cards -->
+    
     <div class="stats-grid">
         <div class="stats-card">
             <div class="stats-icon">
@@ -546,7 +546,7 @@ body {
         </div>
     </div>
 
-    <!-- Success/Error Messages -->
+    
     <?php if(isset($_GET['savedData'])): ?>
     <script>
     Swal.fire({
@@ -594,7 +594,7 @@ body {
     </script>
     <?php endif; ?>
 
-    <!-- User Grid -->
+    
     <div class="user-grid">
         <?php
         $result = mysqli_query($conn, "SELECT * FROM users WHERE dateDeleted IS NULL ORDER BY userID ASC");
@@ -649,7 +649,7 @@ body {
             </div>
         </div>
 
-        <!-- Edit Modal -->
+        
         <div class="modal fade modern-modal" id="editUserModal<?php echo $row['userID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -684,7 +684,7 @@ body {
             </div>
         </div>
 
-        <!-- Delete Modal -->
+        
         <div class="modal fade modern-modal" id="deleteUserModal<?php echo $row['userID']; ?>" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -724,7 +724,7 @@ body {
     </div>
 </div>
 
-<!-- Add User Modal -->
+
 <div class="modal fade modern-modal" id="addUserModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">

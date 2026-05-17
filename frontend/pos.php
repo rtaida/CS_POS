@@ -9,7 +9,7 @@ if(!isset($_SESSION['userID'])){
 
 $csrf_token = $_SESSION['csrf_token'];
 
-// Handle AJAX requests for products
+
 if(isset($_GET['getProducts']) && $_GET['getProducts'] == 'true') {
     header('Content-Type: application/json');
     $search = isset($_GET['search']) ? $_GET['search'] : '';
@@ -42,7 +42,7 @@ if(isset($_GET['getProducts']) && $_GET['getProducts'] == 'true') {
     exit();
 }
 
-// Handle AJAX for getting current cart
+
 if(isset($_POST['getCart']) && $_POST['getCart'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_SESSION['current_sale_id'])) {
@@ -66,7 +66,7 @@ if(isset($_POST['getCart']) && $_POST['getCart'] == 'true') {
     exit();
 }
 
-// Handle AJAX for checking current sale
+
 if(isset($_POST['checkCurrentSale']) && $_POST['checkCurrentSale'] == 'true') {
     header('Content-Type: application/json');
     if(isset($_SESSION['current_sale_id']) && isset($_SESSION['current_invoice'])) {
@@ -80,7 +80,7 @@ if(isset($_POST['checkCurrentSale']) && $_POST['checkCurrentSale'] == 'true') {
     exit();
 }
 
-// Handle AJAX for starting new sale
+
 if(isset($_POST['startSale']) && $_POST['startSale'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
@@ -104,7 +104,7 @@ if(isset($_POST['startSale']) && $_POST['startSale'] == 'true') {
     exit();
 }
 
-// Handle AJAX for adding to cart
+
 if(isset($_POST['addToCart']) && $_POST['addToCart'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
@@ -121,7 +121,7 @@ if(isset($_POST['addToCart']) && $_POST['addToCart'] == 'true') {
     $productID = mysqli_real_escape_string($conn, $_POST['productID']);
     $quantity = (int)$_POST['quantity'];
     
-    // Get product price and stock
+    
     $productQuery = "SELECT price, stock FROM products WHERE productID = '$productID'";
     $productResult = mysqli_query($conn, $productQuery);
     $product = mysqli_fetch_assoc($productResult);
@@ -134,7 +134,7 @@ if(isset($_POST['addToCart']) && $_POST['addToCart'] == 'true') {
     $unitPrice = $product['price'];
     $subtotal = $quantity * $unitPrice;
     
-    // Check if product already in cart
+    
     $checkQuery = "SELECT saleItemID, quantity FROM sale_items WHERE saleID = '$saleID' AND productID = '$productID'";
     $checkResult = mysqli_query($conn, $checkQuery);
     
@@ -154,7 +154,7 @@ if(isset($_POST['addToCart']) && $_POST['addToCart'] == 'true') {
     exit();
 }
 
-// Handle AJAX for removing cart item
+
 if(isset($_POST['removeCartItem']) && $_POST['removeCartItem'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
@@ -173,7 +173,7 @@ if(isset($_POST['removeCartItem']) && $_POST['removeCartItem'] == 'true') {
     exit();
 }
 
-// Handle AJAX for updating quantity
+
 if(isset($_POST['updateQuantity']) && $_POST['updateQuantity'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
@@ -184,7 +184,7 @@ if(isset($_POST['updateQuantity']) && $_POST['updateQuantity'] == 'true') {
     $saleItemID = mysqli_real_escape_string($conn, $_POST['saleItemID']);
     $quantity = (int)$_POST['quantity'];
     
-    // Get unit price
+    
     $getPriceQuery = "SELECT unitPrice FROM sale_items WHERE saleItemID = '$saleItemID'";
     $priceResult = mysqli_query($conn, $getPriceQuery);
     $priceRow = mysqli_fetch_assoc($priceResult);
@@ -200,7 +200,7 @@ if(isset($_POST['updateQuantity']) && $_POST['updateQuantity'] == 'true') {
     exit();
 }
 
-// Handle AJAX for finalizing sale
+
 if(isset($_POST['finalizeSale']) && $_POST['finalizeSale'] == 'true') {
     header('Content-Type: application/json');
     if(!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']){
@@ -219,7 +219,7 @@ if(isset($_POST['finalizeSale']) && $_POST['finalizeSale'] == 'true') {
     $paymentMethod = mysqli_real_escape_string($conn, $_POST['paymentMethod']);
     $customerName = isset($_POST['customerName']) ? mysqli_real_escape_string($conn, $_POST['customerName']) : '';
     
-    // Calculate totals
+    
     $totalsQuery = "SELECT SUM(subtotal) as total FROM sale_items WHERE saleID = '$saleID'";
     $totalsResult = mysqli_query($conn, $totalsQuery);
     $totals = mysqli_fetch_assoc($totalsResult);
@@ -228,7 +228,7 @@ if(isset($_POST['finalizeSale']) && $_POST['finalizeSale'] == 'true') {
     $grandTotal = $subtotal - $discount + $tax;
     $changeDue = $amountPaid - $grandTotal;
     
-    // Update stock
+    
     $itemsQuery = "SELECT productID, quantity FROM sale_items WHERE saleID = '$saleID'";
     $itemsResult = mysqli_query($conn, $itemsQuery);
     while($item = mysqli_fetch_assoc($itemsResult)) {
@@ -236,7 +236,7 @@ if(isset($_POST['finalizeSale']) && $_POST['finalizeSale'] == 'true') {
         mysqli_query($conn, $updateStock);
     }
     
-    // Update sale record
+    
     $updateQuery = "UPDATE sales SET 
                     totalAmount = '$subtotal',
                     discount = '$discount',
@@ -249,7 +249,6 @@ if(isset($_POST['finalizeSale']) && $_POST['finalizeSale'] == 'true') {
                     WHERE saleID = '$saleID'";
     
     if(mysqli_query($conn, $updateQuery)){
-        // Clear session
         unset($_SESSION['current_sale_id']);
         unset($_SESSION['current_invoice']);
         echo json_encode(['status' => 'success']);

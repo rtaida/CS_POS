@@ -257,7 +257,7 @@ $summary = mysqli_fetch_assoc($summaryResult);
         </div>
     </div>
     
-    <!-- Success/Error Messages -->
+    
     <?php if(isset($_GET['deleted'])): ?>
     <script>
     Swal.fire({
@@ -282,14 +282,14 @@ $summary = mysqli_fetch_assoc($summaryResult);
     </script>
     <?php endif; ?>
     
-    <!-- Date Range Display -->
+    
     <div class="date-range-display">
         <i class="bi bi-calendar-range"></i> 
         Showing sales from <span><?php echo date('F d, Y', strtotime($startDate)); ?></span> 
         to <span><?php echo date('F d, Y', strtotime($endDate)); ?></span>
     </div>
     
-    <!-- Filter Bar -->
+    
     <div class="filter-bar">
         <form method="GET" action="" class="row g-3 align-items-end">
             <div class="col-md-3">
@@ -318,7 +318,7 @@ $summary = mysqli_fetch_assoc($summaryResult);
         </form>
     </div>
     
-    <!-- Sales Summary Cards -->
+    
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="summary-card">
@@ -340,7 +340,7 @@ $summary = mysqli_fetch_assoc($summaryResult);
         </div>
     </div>
     
-    <!-- Sales List -->
+    
     <?php if(isset($result) && mysqli_num_rows($result) > 0): ?>
         <?php while($sale = mysqli_fetch_assoc($result)): ?>
         <div class="sale-card" id="sale-<?php echo $sale['saleID']; ?>">

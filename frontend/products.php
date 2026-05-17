@@ -96,7 +96,7 @@ $csrf_token = $_SESSION['csrf_token'];
 <?php include "nav.php"; ?>
 
 <div class="main-content">
-    <!-- Header -->
+    
     <div class="products-header">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
             <div>
@@ -109,10 +109,10 @@ $csrf_token = $_SESSION['csrf_token'];
         </div>
     </div>
     
-    <!-- Message Alerts -->
+    
     <?php include "message/productMessageAuth.php"; ?>
     
-    <!-- Products Table -->
+    
     <div class="product-table-container">
         <div class="row mb-3">
             <div class="col-md-4">
@@ -124,7 +124,7 @@ $csrf_token = $_SESSION['csrf_token'];
                     <?php
                     $categories = mysqli_query($conn, "SELECT * FROM categories WHERE dateDeleted IS NULL");
                     while($cat = mysqli_fetch_assoc($categories)){
-                        echo '<option value="' . $cat['categoryID'] . '">' . $cat['categoryName'] . '</option>';
+                        echo '<option value="' . $cat['categoryID'] . '">' . htmlspecialchars($cat['categoryName']) . '</option>';
                     }
                     ?>
                 </select>
@@ -175,10 +175,10 @@ $csrf_token = $_SESSION['csrf_token'];
                             $stockClass = 'stock-high';
                         }
                     ?>
-                    <tr>
-                        <td><span class="badge bg-secondary"><?php echo $row['productCode']; ?></span></td>
+                    <tr data-category-id="<?php echo $row['categoryID']; ?>" data-reorder-level="<?php echo $row['reorderLevel']; ?>">
+                        <td><span class="badge bg-secondary"><?php echo htmlspecialchars($row['productCode']); ?></span></td>
                         <td><strong><?php echo htmlspecialchars($row['productName']); ?></strong></td>
-                        <td><?php echo $row['categoryName'] ?? 'Uncategorized'; ?></td>
+                        <td><?php echo htmlspecialchars($row['categoryName'] ?? 'Uncategorized'); ?></td>
                         <td class="text-success fw-bold">₱<?php echo number_format($row['price'], 2); ?></td>
                         <td class="text-muted">₱<?php echo number_format($row['cost'], 2); ?></td>
                         <td><?php echo $row['stock']; ?></td>
@@ -228,7 +228,7 @@ $csrf_token = $_SESSION['csrf_token'];
     </div>
 </div>
 
-<!-- Add Product Modal -->
+
 <div class="modal fade modal-custom" id="addProductModal" tabindex="-1">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -264,7 +264,7 @@ $csrf_token = $_SESSION['csrf_token'];
                                 <?php
                                 $categories = mysqli_query($conn, "SELECT * FROM categories WHERE dateDeleted IS NULL");
                                 while($cat = mysqli_fetch_assoc($categories)){
-                                    echo '<option value="' . $cat['categoryID'] . '">' . $cat['categoryName'] . '</option>';
+                                    echo '<option value="' . $cat['categoryID'] . '">' . htmlspecialchars($cat['categoryName']) . '</option>';
                                 }
                                 ?>
                             </select>
@@ -314,29 +314,67 @@ $csrf_token = $_SESSION['csrf_token'];
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Table filtering
-$('#searchTable, #filterCategory, #filterStock').on('keyup change', function() {
+
+function filterProducts() {
     let search = $('#searchTable').val().toLowerCase();
-    let category = $('#filterCategory').val();
+    let categoryID = $('#filterCategory').val();
     let stockFilter = $('#filterStock').val();
     
     $('#productsTable tbody tr').each(function() {
-        let name = $(this).find('td:eq(1)').text().toLowerCase();
-        let code = $(this).find('td:eq(0)').text().toLowerCase();
-        let rowCategory = $(this).find('td:eq(2)').text();
-        let stock = parseInt($(this).find('td:eq(5)').text());
-        let reorderLevel = 5; // Default, would need to store in data attribute
+        let $row = $(this);
+        let name = $row.find('td:eq(1)').text().toLowerCase();
+        let code = $row.find('td:eq(0)').text().toLowerCase();
+        
+        
+        let rowCategoryID = $row.data('category-id') || '';
+        
+        
+        let stockText = $row.find('td:eq(5)').text().trim();
+        let stock = parseInt(stockText) || 0;
+        
+        
+        let reorderLevel = parseInt($row.data('reorder-level')) || 5;
+        
         
         let matchSearch = name.includes(search) || code.includes(search);
-        let matchCategory = category === '' || rowCategory === category;
+        
+        
+        let matchCategory = categoryID === '' || rowCategoryID == categoryID;
+        
+        
         let matchStock = true;
+        if(stockFilter === 'low') {
+            matchStock = stock <= reorderLevel && stock > 0;
+        } else if(stockFilter === 'out') {
+            matchStock = stock === 0;
+        } else if(stockFilter === 'in') {
+            matchStock = stock > reorderLevel;
+        }
         
-        if(stockFilter === 'low') matchStock = stock <= 5 && stock > 0;
-        else if(stockFilter === 'out') matchStock = stock === 0;
-        else if(stockFilter === 'in') matchStock = stock > 5;
-        
-        $(this).toggle(matchSearch && matchCategory && matchStock);
+
+        if(matchSearch && matchCategory && matchStock) {
+            $row.show();
+        } else {
+            $row.hide();
+        }
     });
+}
+
+
+$('#searchTable, #filterCategory, #filterStock').on('keyup change', function() {
+    filterProducts();
+});
+
+
+filterProducts();
+
+
+let searchTimeout;
+$('#searchTable').on('keyup', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(function() {
+        filterProducts();
+    }, 300);
 });
 </script>
 </body>
