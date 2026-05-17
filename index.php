@@ -39,7 +39,6 @@ body {
     overflow-x: hidden;
 }
 
-
 .circle {
     position: absolute;
     border-radius: 50%;
@@ -87,7 +86,6 @@ body {
     box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
 }
 
-
 .login-illustration {
     flex: 1;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -118,9 +116,10 @@ body {
 }
 
 .illustration-content h1 {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     margin-bottom: 10px;
+    line-height: 1.3;
 }
 
 .illustration-content p {
@@ -173,7 +172,6 @@ body {
     opacity: 0.8;
 }
 
-
 .dots {
     position: absolute;
     bottom: 20px;
@@ -200,7 +198,6 @@ body {
     bottom: -25px;
     right: -25px;
 }
-
 
 .login-form-container {
     flex: 1;
@@ -262,7 +259,6 @@ body {
     color: #a0aec0;
     font-size: 12px;
 }
-
 
 .checkbox-group {
     display: flex;
@@ -426,7 +422,6 @@ body {
     color: #667eea;
 }
 
-
 @media (max-width: 850px) {
     .login-illustration {
         display: none;
@@ -463,7 +458,6 @@ body {
 
 <div class="container-custom">
     <div class="login-wrapper">
-
         <div class="login-illustration">
             <div class="illustration-content">
                 <div class="logo">
@@ -491,7 +485,6 @@ body {
             </div>
         </div>
         
-   
         <div class="login-form-container">
             <div class="login-header">
                 <h2>Welcome Back</h2>
@@ -542,16 +535,14 @@ body {
             </div>
             
             <div class="presented-by">
-                <p><i class="bi bi-credit-card"></i> presented by <br>Jared<br>Jaybart<br>Switt<br>CJ</p>
-                <p class="security-badge">
-                    
-                </p>
+                <p><i class="bi bi-credit-card"></i> presented by<br>Jared • Jaybart • Switt • CJ</p>
+                <p class="security-badge"></p>
             </div>
         </div>
     </div>
 </div>
 
-
+<!-- Forgot Password Modal -->
 <div class="modal fade" id="forgotPasswordModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content" style="border-radius: 20px;">
@@ -583,19 +574,7 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-
-const form = document.querySelector('form');
-if(form) {
-    form.addEventListener('submit', function(e) {
-        const button = form.querySelector('.login-button');
-        if(button && !button.disabled) {
-            button.innerHTML = '<i class="bi bi-hourglass-split"></i> Signing in...';
-            button.disabled = true;
-        }
-    });
-}
-
-
+// Forgot password form handling (no loading effect on main login)
 const forgotForm = document.getElementById('forgotPasswordForm');
 if(forgotForm) {
     forgotForm.addEventListener('submit', function(e) {
@@ -606,7 +585,6 @@ if(forgotForm) {
         if(email) {
             button.innerHTML = '<i class="bi bi-hourglass-split"></i> Sending...';
             button.disabled = true;
-            
             
             setTimeout(() => {
                 Swal.fire({
@@ -632,7 +610,6 @@ if(forgotForm) {
 </script>
 
 <style>
-
 .small-swal {
     font-size: 13px;
     width: 350px;
